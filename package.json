@@ -1,0 +1,20 @@
+{
+  "name": "esonic",
+  "version": "0.0.1",
+  "description": "electron test of resonance audio",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "nikolozka",
+  "license": "ISC",
+  "dependencies": {
+    "osc-js": "^2.0.3",
+    "resonance-audio": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^6.0.7",
+    "eruda": "^1.5.8"
+  }
+}
