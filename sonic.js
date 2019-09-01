@@ -1,19 +1,20 @@
-let audioContext;
-let scene;
-let audioElement;
-let audioElementSource;
-let source;
-let pannerNode;
-let pannerGain;
+const osc = require('osc')
+
+let audioContext; 
+let scene; 
+let audioElement; 
+let audioElementSource; 
+let source; 
+let pannerNode; 
+let pannerGain; 
 let audioReady = false;
 
-let x,y,z;
+let x=0;
+let y=0;
+let z=0;
 
 let angle = 0.0;
 let order = 3;
-
-let udpPort;
-let osc;
 
 let afile = "resources/out.mp3";
 
@@ -21,58 +22,21 @@ let afile = "resources/out.mp3";
  * @private
  */
 
-
 function upd(){
   if(!audioReady) return;
-
-//  x=2*Math.random()-1;
-//  y=2*Math.random()-1;
-
-x=Math.cos(angle);
-//  x=angle/180.0-1.0;
-  y=Math.sin(angle);
-//  y=0.0;
-  z=0.0;
-
-//  console.log(x + "    " + y);
-
-  angle+= 0.1;
-
-  if(angle > 359.9) angle = 0.0;
-
-  //z=2*Math.random()-1;
-
-
+  
   pannerNode.setPosition(x,y,z);
   source.setPosition(x,y,z);
-
-  setTimeout(upd,200);
-
 }
 
-
+function initOSC() {
+  udpPort.open()
+}
 
 function initAudio() {
 
-  console.log("initializing audio");
-
-
-/*  osc = new OSC()
-
-  osc.on('/param/density', message => {
-    console.log(message.args)
-  })
-
-  osc.open({ port: 9000 })
-
-  const message = new OSC.Message('/test', 'hello');
-//  osc.send(message) */
-
   audioContext = new AudioContext();
 
-  console.log("audio context acquired");
-
-  // Create a (3rd-order Ambisonic) ResonanceAudio scene.
   scene = new ResonanceAudio(audioContext,{ambisonicOrder: order});
 
   // Send scene's rendered binaural output to stereo out.
@@ -129,14 +93,32 @@ function initAudio() {
 }
 
 let onLoad = function() {
-  // Initialize play button functionality.
-  console.log("window loaded");
+
+  initOSC();
+
   if (!audioReady) {
-	console.log("audio is not initialized")
   	initAudio();
   }
+
   audioElement.play();
+
   upd();
 };
 
 window.addEventListener('load', onLoad);
+
+var udpPort = new osc.UDPPort({
+    localAddress: "127.0.0.1",
+    localPort: 9000,
+    metadata: true
+});
+
+udpPort.on("message", function (oscMsg) {
+  if (oscMsg.address == "/az") {x=parseFloat(oscMsg.args[0].value)}
+  if (oscMsg.address == "/el") {y=parseFloat(oscMsg.args[0].value)}
+
+  upd();
+  console.log(x);
+  console.log(y);
+});
+
