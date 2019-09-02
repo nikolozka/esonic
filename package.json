@@ -10,6 +10,7 @@
   "author": "nikolozka",
   "license": "ISC",
   "dependencies": {
+    "electron-log": "^3.0.7",
     "osc": "^2.3.1",
     "resonance-audio": "^1.0.0",
     "serialport": "^7.1.5"
