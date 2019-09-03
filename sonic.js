@@ -1,5 +1,6 @@
 const osc = require('osc')
 const log = require('electron-log')
+const three = require('three')
 
 let audioContext; 
 let scene; 
@@ -7,9 +8,17 @@ let audioElement;
 let audioElementSource; 
 let source; 
 let audioReady = false;
+let matrix
 
+let pos
+let quat
+let scale
+
+let utils;
+
+let w=0;
 let x=0;
-let y=1;
+let y=0;
 let z=0;
 
 let angle = 0.0;
@@ -19,7 +28,13 @@ let afile = "resources/out.mp3";
 
 function upd(){
   if(!audioReady) return;
-  source.setPosition(x,y,z);
+
+  matrix = new three.Matrix4();
+  quat = new three.Quaternion(x,y,z,w)
+  matrix.makeRotationFromQuaternion(quat.conjugate());
+
+  scene.setListenerFromMatrix(matrix);
+
   setInterval(upd, 33);
 }
 
@@ -56,13 +71,14 @@ function initAudio() {
   audioElementSource = audioContext.createMediaElementSource(audioElement);
   source = scene.createSource();
   audioElementSource.connect(source.input);
-  source.setPosition(x,y,z);
+
+  source.setPosition(0,4,0);
+
   audioReady = true;
 }
 
 let onLoad = function() {
 
-  log.info("log initialised")
   initOSC();
 
   if (!audioReady) {
@@ -81,8 +97,14 @@ var udpPort = new osc.UDPPort({
     metadata: true
 });
 
-udpPort.on("message", function (oscMsg) {
-  if (oscMsg.address == "/az") {x=parseFloat(oscMsg.args[0].value)}
-  if (oscMsg.address == "/el") {y=parseFloat(oscMsg.args[0].value)}
+udpPort.on("bundle", function (oscBundle, timeTag, info) {
+
+  if (oscBundle.packets[0].address == "/w") {w=parseFloat(oscBundle.packets[0].args[0].value)}
+  if (oscBundle.packets[1].address == "/x") {x=parseFloat(oscBundle.packets[1].args[0].value)}
+  if (oscBundle.packets[2].address == "/y") {y=parseFloat(oscBundle.packets[2].args[0].value)}
+  if (oscBundle.packets[3].address == "/z") {z=parseFloat(oscBundle.packets[3].args[0].value)}
+
+//  log.info(w + " " + x + " " + y + " " + z);
+
 });
 
