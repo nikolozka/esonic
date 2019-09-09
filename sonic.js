@@ -21,6 +21,10 @@ let x=0;
 let y=0;
 let z=0;
 
+let sx=0;
+let sy=1;
+let sz=0;
+
 let angle = 0.0;
 let order = 2;
 
@@ -34,7 +38,7 @@ function upd(){
   matrix.makeRotationFromQuaternion(quat.conjugate());
 
   scene.setListenerFromMatrix(matrix);
-
+  source.setPosition(sx,sy,sz);
   setInterval(upd, 33);
 }
 
@@ -72,7 +76,7 @@ function initAudio() {
   source = scene.createSource();
   audioElementSource.connect(source.input);
 
-  source.setPosition(0,4,0);
+  source.setPosition(sx,sy,sz);
 
   audioReady = true;
 }
@@ -108,3 +112,10 @@ udpPort.on("bundle", function (oscBundle, timeTag, info) {
 
 });
 
+udpPort.on("message", function(oscMsg){
+
+  if (oscMsg.address == "/oscControl/sx") {sx=parseFloat(oscMsg.args[0].value)}
+  if (oscMsg.address == "/oscControl/sy") {sy=parseFloat(oscMsg.args[0].value)}
+  if (oscMsg.address == "/oscControl/sz") {sz=parseFloat(oscMsg.args[0].value)}
+
+});

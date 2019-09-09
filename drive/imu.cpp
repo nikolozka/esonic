@@ -11,6 +11,7 @@
 RTQuaternion quat;
 RTQuaternion quat_s;
 
+float slerp = 0.5;
 
 //axis alignment
 
@@ -44,25 +45,24 @@ int main(int argc, char* argv[]) {
 
     imu->IMUInit();
 
-    imu->setSlerpPower(0.033);
+    imu->setSlerpPower(slerp);
     imu->setGyroEnable(true);
     imu->setAccelEnable(true);
     imu->setCompassEnable(true);
 
-    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();
+    rateTimer = RTMath::currentUSecsSinceEpoch();
+
     UdpTransmitSocket transmitSocket( IpEndpointName( ADDRESS, PORT ) );
+
     char buffer[OUTPUT_BUFFER_SIZE];
+
     while (1) {
 
         usleep(imu->IMUGetPollInterval() * 1000);
+
         while (imu->IMURead()) {
             RTIMU_DATA imuData = imu->getIMUData();
             sampleCount++;
-            now = RTMath::currentUSecsSinceEpoch();
-            if ((now - displayTimer) > 100000) {
-                fflush(stdout);
-                displayTimer = now;
-            }
 
 	    if(imuData.fusionQPoseValid){
 		quat = imuData.fusionQPose;
@@ -115,9 +115,6 @@ int main(int argc, char* argv[]) {
 	std::cout<<"\n";*/
 
 	osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
-
-
-
     	p << osc::BeginBundleImmediate
 
         	<< osc::BeginMessage( "/w" )
