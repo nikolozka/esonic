@@ -47,35 +47,45 @@ function initOSC() {
   udpPort.open()
 }
 
-desktopCapturer.getSources( { types : ['window', 'screen'] } ).then(async sources=>{
-	/*for(const source of sources){
-		if(source.name === 'Electron'{
-			try{
-				const stream = await navigator.mediaDevics.getUserMedia({
-					audio: true,
-					video: false
-				})
-				handleStream(stream)
-	  		}
-			catch (e){
-	    			handleError(e)
-	  		}
-	  		return
-		}
-	}*/
-})
+async function getMedia(pc) {
+  let stream = null;
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+    log.info("enumerateDevices() not supported.");
+    return;
+  }
+
+  navigator.mediaDevices.enumerateDevices().then(function(devices) {
+    devices.forEach(function(device) {
+      log.info(device.kind + ": " + device.label + " id = " + device.deviceId);
+    });
+  }).catch(function(err) {
+    log.info(err.name + ": " + err.message);
+  });
+
+  try {
+  	var enumeratorPromise = navigator.mediaDevices.enumerateDevices();
+    stream = await navigator.mediaDevices.getUserMedia({audio:true, video:false});
+    handleStream(stream)
+  } catch(err) {
+	handleError(err)
+  }
+}
 
 function handleError(e){
 	log.error(e)
 }
 
 function handleStream(stream){
+
 }
 
 function initAudio() {
 
   log.info("starting to load stuff")
-
+  
+  getMedia()
+  
   audioContext = new AudioContext();
   scene = new ResonanceAudio(audioContext,{ambisonicOrder: order});
   scene.output.connect(audioContext.destination);
