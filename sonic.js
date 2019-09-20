@@ -58,7 +58,9 @@ async function getMedia(pc) {
   navigator.mediaDevices.enumerateDevices().then(function(devices) {
     devices.forEach(function(device) {
       log.info(device.kind + ": " + device.label + " id = " + device.deviceId);
-    });
+    }
+    log.info("end device list")
+    );
   }).catch(function(err) {
     log.info(err.name + ": " + err.message);
   });
