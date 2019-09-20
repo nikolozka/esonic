@@ -1,6 +1,7 @@
 const osc = require('osc')
 const log = require('electron-log')
 const three = require('three')
+const desktopCapturer = require('electron')
 
 let audioContext; 
 let scene; 
@@ -46,7 +47,34 @@ function initOSC() {
   udpPort.open()
 }
 
+desktopCapturer.getSources( { types : ['window', 'screen'] } ).then(async sources=>{
+	/*for(const source of sources){
+		if(source.name === 'Electron'{
+			try{
+				const stream = await navigator.mediaDevics.getUserMedia({
+					audio: true,
+					video: false
+				})
+				handleStream(stream)
+	  		}
+			catch (e){
+	    			handleError(e)
+	  		}
+	  		return
+		}
+	}*/
+})
+
+function handleError(e){
+	log.error(e)
+}
+
+function handleStream(stream){
+}
+
 function initAudio() {
+
+  log.info("starting to load stuff")
 
   audioContext = new AudioContext();
   scene = new ResonanceAudio(audioContext,{ambisonicOrder: order});
@@ -97,6 +125,7 @@ window.addEventListener('load', onLoad);
 
 var udpPort = new osc.UDPPort({
     localAddress: "192.168.188.62",
+//    localAddress: "192.168.43.59",
     localPort: 9000,
     metadata: true
 });
