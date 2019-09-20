@@ -58,19 +58,18 @@ async function getMedia(pc) {
   navigator.mediaDevices.enumerateDevices().then(function(devices) {
     devices.forEach(function(device) {
       log.info(device.kind + ": " + device.label + " id = " + device.deviceId);
-    }
+    });
     log.info("end device list")
-    );
   }).catch(function(err) {
+
     log.info(err.name + ": " + err.message);
   });
 
   try {
-  	var enumeratorPromise = navigator.mediaDevices.enumerateDevices();
-    stream = await navigator.mediaDevices.getUserMedia({audio:true, video:false});
+    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: default} } });
     handleStream(stream)
   } catch(err) {
-	handleError(err)
+    handleError(err)
   }
 }
 
@@ -79,7 +78,8 @@ function handleError(e){
 }
 
 function handleStream(stream){
-
+  var mediaStreamTracks = stream.getAudioTracks()
+  log.info(mediaStreamTracks)
 }
 
 function initAudio() {
