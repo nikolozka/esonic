@@ -67,16 +67,17 @@ async function getMedia(pc) {
   });
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: adevice} } });
+    log.info("trying to open audio device")
+    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
+//    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId : {exact: "22d0745bbfa45f7988aaa72cba793c5865ab5a85eb0b3a506296690affcfcd16"}}});
     handleStream(stream)
-  } catch(err) {
-    handleError(err)
+  }
+  catch(err){
+	log.info("failed to open device: ")
+	log.info(err.name)
   }
 }
 
-function handleError(e){
-	log.error(e)
-}
 
 function handleStream(stream){
   var mediaStreamTracks = stream.getAudioTracks()
@@ -85,11 +86,9 @@ function handleStream(stream){
 
 function initAudio() {
 
-  log.info("starting to load stuff")
-  
-  getMedia()
-  
-  audioContext = new AudioContext();
+//  getMedia()
+//  audioContext = new AudioContext();
+  audioContext = new AudioContext(window.AudioContext || window.webkitAudioContext());
   scene = new ResonanceAudio(audioContext,{ambisonicOrder: order});
   scene.output.connect(audioContext.destination);
 
@@ -123,7 +122,6 @@ function initAudio() {
 }
 
 let onLoad = function() {
-  log.info("this much works")
   initOSC();
 
   if (!audioReady) {
@@ -142,6 +140,7 @@ var udpPort = new osc.UDPPort({
 //    localAddress: "192.168.43.59",
     localPort: 9000,
     metadata: true
+//    log.info("listening on " + localAddress)
 });
 
 udpPort.on("bundle", function (oscBundle, timeTag, info) {
@@ -160,5 +159,6 @@ udpPort.on("message", function(oscMsg){
   if (oscMsg.address == "/oscControl/sx") {sx=parseFloat(oscMsg.args[0].value)}
   if (oscMsg.address == "/oscControl/sy") {sy=parseFloat(oscMsg.args[0].value)}
   if (oscMsg.address == "/oscControl/sz") {sz=parseFloat(oscMsg.args[0].value)}
+  log.info(sx + " " + sy + " " + sz);
 
 });
