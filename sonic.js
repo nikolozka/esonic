@@ -122,7 +122,7 @@ function initAudio() {
 }
 
 let onLoad = function() {
-
+  log.info("this much works")
   initOSC();
 
   if (!audioReady) {
@@ -136,7 +136,8 @@ let onLoad = function() {
 window.addEventListener('load', onLoad);
 
 var udpPort = new osc.UDPPort({
-    localAddress: "192.168.188.62",
+    localAddress: "192.168.137.172",
+//    localAddress: "192.168.188.62",
 //    localAddress: "192.168.43.59",
     localPort: 9000,
     metadata: true
@@ -149,7 +150,7 @@ udpPort.on("bundle", function (oscBundle, timeTag, info) {
   if (oscBundle.packets[2].address == "/y") {y=parseFloat(oscBundle.packets[2].args[0].value)}
   if (oscBundle.packets[3].address == "/z") {z=parseFloat(oscBundle.packets[3].args[0].value)}
 
-//  log.info(w + " " + x + " " + y + " " + z);
+  log.info(w + " " + x + " " + y + " " + z);
 
 });
 
