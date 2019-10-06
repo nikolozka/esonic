@@ -86,9 +86,9 @@ function handleStream(stream){
 
 function initAudio() {
 
-//  getMedia()
-//  audioContext = new AudioContext();
-  audioContext = new AudioContext(window.AudioContext || window.webkitAudioContext());
+  getMedia()
+  audioContext = new AudioContext();
+//  audioContext = new AudioContext(window.AudioContext || window.webkitAudioContext());
   scene = new ResonanceAudio(audioContext,{ambisonicOrder: order});
   scene.output.connect(audioContext.destination);
 
@@ -140,7 +140,6 @@ var udpPort = new osc.UDPPort({
 //    localAddress: "192.168.43.59",
     localPort: 9000,
     metadata: true
-//    log.info("listening on " + localAddress)
 });
 
 udpPort.on("bundle", function (oscBundle, timeTag, info) {
