@@ -30,6 +30,7 @@ let angle = 0.0;
 let order = 2;
 
 let afile = "resources/out.mp3";
+let adevice = "default"
 
 function upd(){
   if(!audioReady) return;
@@ -66,7 +67,7 @@ async function getMedia(pc) {
   });
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: default} } });
+    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: adevice} } });
     handleStream(stream)
   } catch(err) {
     handleError(err)
