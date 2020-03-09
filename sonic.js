@@ -72,13 +72,10 @@ async function getMedia(pc) {
   });
 
   try {
-<<<<<<< HEAD
     stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: "c0b30a189bbe02c724b088f8e96443efb09bdabf9d63c6d5d4c273b4fb255fcd"}} });
-=======
     log.info("trying to open audio device")
     stream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
 //    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId : {exact: "22d0745bbfa45f7988aaa72cba793c5865ab5a85eb0b3a506296690affcfcd16"}}});
->>>>>>> 41e3c9b5be3435e855ea28f6449b740de840f428
     handleStream(stream)
   }
   catch(err){
@@ -131,7 +128,6 @@ function initAudio() {
 }
 
 let onLoad = function() {
-<<<<<<< HEAD
 
   rscene = new three.Scene()
   camera = new three.PerspectiveCamera( 75, 1, 0.1, 1000 );
@@ -139,8 +135,6 @@ let onLoad = function() {
 
   animate();
 
-=======
->>>>>>> 41e3c9b5be3435e855ea28f6449b740de840f428
   initOSC();
 
   if (!audioReady) {
@@ -154,13 +148,10 @@ let onLoad = function() {
 window.addEventListener('load', onLoad);
 
 var udpPort = new osc.UDPPort({
-<<<<<<< HEAD
 //    localAddress: "127.0.0.1",
 //    localAddress: "192.168.43.230",
-=======
     localAddress: "192.168.137.172",
 //    localAddress: "192.168.188.62",
->>>>>>> 41e3c9b5be3435e855ea28f6449b740de840f428
 //    localAddress: "192.168.43.59",
     localAddress: "192.168.188.62",
     localPort: 9000,
