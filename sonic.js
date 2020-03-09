@@ -31,6 +31,11 @@ let order = 2;
 
 let afile = "resources/out.mp3";
 
+let rscene
+let camera
+let renderer
+
+
 function upd(){
   if(!audioReady) return;
 
@@ -40,7 +45,7 @@ function upd(){
 
   scene.setListenerFromMatrix(matrix);
   source.setPosition(sx,sy,sz);
-  setInterval(upd, 33);
+//  setInterval(upd, 33);
 }
 
 function initOSC() {
@@ -66,7 +71,7 @@ async function getMedia(pc) {
   });
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: default} } });
+    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: "c0b30a189bbe02c724b088f8e96443efb09bdabf9d63c6d5d4c273b4fb255fcd"}} });
     handleStream(stream)
   } catch(err) {
     handleError(err)
@@ -78,8 +83,8 @@ function handleError(e){
 }
 
 function handleStream(stream){
-  var mediaStreamTracks = stream.getAudioTracks()
-  log.info(mediaStreamTracks)
+  var mediaStreamTracks = stream.getTracks()
+  log.info(stream)
 }
 
 function initAudio() {
@@ -93,17 +98,17 @@ function initAudio() {
   scene.output.connect(audioContext.destination);
 
   let dimensions = {
-    width: 3,
-    height: 3,
-    depth: 3,
+    width: 10,
+    height: 10,
+    depth: 10,
   };
   let materials = {
-    left: 'wood-panel',
-    right: 'wood-panel',
-    front: 'wood-panel',
-    back: 'wood-panel',
-    down: 'wood-panel',
-    up: 'wood-panel',
+    left: 'marble',
+    right: 'marble',
+    front: 'marble',
+    back: 'marble',
+    down: 'marbe',
+    up: 'marble',
   };
 
   scene.setRoomProperties(dimensions, materials);
@@ -123,6 +128,12 @@ function initAudio() {
 
 let onLoad = function() {
 
+  rscene = new three.Scene()
+  camera = new three.PerspectiveCamera( 75, 1, 0.1, 1000 );
+  renderer = new three.WebGLRenderer(); 
+
+  animate();
+
   initOSC();
 
   if (!audioReady) {
@@ -130,14 +141,16 @@ let onLoad = function() {
   }
 
   audioElement.play();
-  upd();
+//  upd();
 };
 
 window.addEventListener('load', onLoad);
 
 var udpPort = new osc.UDPPort({
-    localAddress: "192.168.188.62",
+//    localAddress: "127.0.0.1",
+//    localAddress: "192.168.43.230",
 //    localAddress: "192.168.43.59",
+    localAddress: "192.168.188.62",
     localPort: 9000,
     metadata: true
 });
@@ -160,3 +173,9 @@ udpPort.on("message", function(oscMsg){
   if (oscMsg.address == "/oscControl/sz") {sz=parseFloat(oscMsg.args[0].value)}
 
 });
+
+function animate() {
+	requestAnimationFrame( animate );
+	renderer.render( rscene, camera );
+	upd()
+}

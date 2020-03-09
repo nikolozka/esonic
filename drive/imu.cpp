@@ -3,7 +3,8 @@
 #include "/usr/local/include/oscpack/osc/OscOutboundPacketStream.h"
 #include "/usr/local/include/oscpack/ip/UdpSocket.h"
 
-#define ADDRESS "192.168.188.62"
+#define ADDRESS "127.0.0.1"
+//#define ADDRESS "192.168.43.230"
 //#define ADDRESS "192.168.43.59"
 #define PORT 9000
 #define OUTPUT_BUFFER_SIZE 1024
