@@ -18,7 +18,7 @@
     "three-js": "^79.0.0"
   },
   "devDependencies": {
-    "electron": "^6.0.7",
+    "electron": "^6.0.11",
     "electron-rebuild": "^1.8.6"
   }
 }
