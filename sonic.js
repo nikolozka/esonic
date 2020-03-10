@@ -9,7 +9,7 @@ let audioElement;
 let audioElementSource; 
 let source; 
 let audioReady = false;
-let matrix
+let matrix = new three.Matrix4();
 
 let pos
 let quat
@@ -26,6 +26,10 @@ let sx=0;
 let sy=1;
 let sz=0;
 
+let lx=0;
+let ly=0;
+let lz=0;
+
 let angle = 0.0;
 let order = 2;
 
@@ -36,14 +40,16 @@ let rscene
 let camera
 let renderer
 
+let joy = false
+
+
 
 function upd(){
   if(!audioReady) return;
 
-  matrix = new three.Matrix4();
   quat = new three.Quaternion(x,y,z,w)
   matrix.makeRotationFromQuaternion(quat.conjugate());
-
+  matrix.setPosition(lx,ly,lz);
   scene.setListenerFromMatrix(matrix);
   source.setPosition(sx,sy,sz);
 //  setInterval(upd, 33);
@@ -147,6 +153,13 @@ let onLoad = function() {
 
 window.addEventListener('load', onLoad);
 
+window.addEventListener("gamepadconnected", function(e) {
+  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+    e.gamepad.index, e.gamepad.id,
+    e.gamepad.buttons.length, e.gamepad.axes.length);
+    joy=true
+});
+
 var udpPort = new osc.UDPPort({
 //    localAddress: "127.0.0.1",
 //    localAddress: "192.168.43.230",
@@ -181,5 +194,40 @@ udpPort.on("message", function(oscMsg){
 function animate() {
 	requestAnimationFrame( animate );
 	renderer.render( rscene, camera );
+
+  if(joy){
+    if(navigator.webkitGetGamepads) {
+      var gp = navigator.webkitGetGamepads()[0];
+
+      if(gp.buttons[0] == 1) {
+        log.info("bt0")
+      } else if(gp.buttons[1] == 1) {
+        log.info("bt1")
+      } else if(gp.buttons[2] == 1) {
+        log.info("bt2")
+      } else if(gp.buttons[3] == 1) {
+        log.info("bt3")
+      }
+
+      if(Math.abs(gp.axes[0])>0.2){lx+=gp.axes[0]/10.0}
+      if(Math.abs(gp.axes[1])>0.2){ly+=gp.axes[1]/10.0}
+
+
+    } else {
+      var gp = navigator.getGamepads()[0];
+
+      if(gp.buttons[0].value > 0 || gp.buttons[0].pressed == true) {
+        log.info("bt0")
+      } else if(gp.buttons[1].value > 0 || gp.buttons[1].pressed == true) {
+        log.info("bt1")
+      } else if(gp.buttons[2].value > 0 || gp.buttons[2].pressed == true) {
+        log.info("bt2")
+      } else if(gp.buttons[3].value > 0 || gp.buttons[3].pressed == true) {
+        log.info("bt3")
+      }
+      if(Math.abs(gp.axes[0])>0.2){lx+=gp.axes[0]/10.0}
+      if(Math.abs(gp.axes[1])>0.2){ly+=gp.axes[1]/10.0}
+    }
+  }
 	upd()
 }

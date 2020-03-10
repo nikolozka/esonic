@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "electron-log": "^3.0.7",
+    "node-abi": "^2.15.0",
     "osc": "^2.3.1",
     "resonance-audio": "^1.0.0",
     "serialport": "^7.1.5",
