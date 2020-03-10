@@ -78,7 +78,7 @@ async function getMedia(pc) {
   });
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: "c0b30a189bbe02c724b088f8e96443efb09bdabf9d63c6d5d4c273b4fb255fcd"}} });
+    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId: {exact: "default"}} });
     log.info("trying to open audio device")
     stream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
 //    stream = await navigator.mediaDevices.getUserMedia({video: false, audio: {deviceId : {exact: "22d0745bbfa45f7988aaa72cba793c5865ab5a85eb0b3a506296690affcfcd16"}}});
@@ -163,8 +163,8 @@ window.addEventListener("gamepadconnected", function(e) {
 var udpPort = new osc.UDPPort({
 //    localAddress: "127.0.0.1",
 //    localAddress: "192.168.43.230",
-    localAddress: "192.168.137.172",
-//    localAddress: "192.168.188.62",
+//    localAddress: "192.168.137.172",
+    localAddress: "192.168.188.62",
 //    localAddress: "192.168.43.59",
     localAddress: "192.168.188.62",
     localPort: 9000,
@@ -178,7 +178,7 @@ udpPort.on("bundle", function (oscBundle, timeTag, info) {
   if (oscBundle.packets[2].address == "/y") {y=parseFloat(oscBundle.packets[2].args[0].value)}
   if (oscBundle.packets[3].address == "/z") {z=parseFloat(oscBundle.packets[3].args[0].value)}
 
-  log.info(w + " " + x + " " + y + " " + z);
+  //log.info(w + " " + x + " " + y + " " + z);
 
 });
 
@@ -187,7 +187,7 @@ udpPort.on("message", function(oscMsg){
   if (oscMsg.address == "/oscControl/sx") {sx=parseFloat(oscMsg.args[0].value)}
   if (oscMsg.address == "/oscControl/sy") {sy=parseFloat(oscMsg.args[0].value)}
   if (oscMsg.address == "/oscControl/sz") {sz=parseFloat(oscMsg.args[0].value)}
-  log.info(sx + " " + sy + " " + sz);
+  //log.info(sx + " " + sy + " " + sz);
 
 });
 
