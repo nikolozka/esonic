@@ -303,6 +303,9 @@ function animate() {
 
       if(Math.abs(gp.axes[0])>0.2){lx+=gp.axes[0]/10.0}
       if(Math.abs(gp.axes[1])>0.2){ly+=gp.axes[1]/10.0}
+
+      if(Math.abs(gp.axes[2])>0.2){lx+=gp.axes[0]/10.0}
+      //if(Math.abs(gp.axes[1])>0.2){ly+=gp.axes[1]/10.0}
     }
   }
 	upd()
