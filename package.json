@@ -10,6 +10,7 @@
   "author": "nikolozka",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "electron-log": "^3.0.7",
     "node-abi": "^2.15.0",
     "osc": "^2.3.1",

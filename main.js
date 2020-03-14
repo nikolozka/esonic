@@ -7,6 +7,7 @@ const osc = require('osc')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
