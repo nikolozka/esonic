@@ -55,7 +55,11 @@ function upd(){
   if(!audioReady) return;
 
   quat = new three.Quaternion(x,y,z,w)
-  matrix.compose({0,0,0}, quat,{1,1,1})
+  pos = new three.Vector3(0,0,0)
+  scale = new three.Vector3(1,1,1)
+  matrix.compose(pos, quat,scale)
+
+  console.log(matrix)
 
   //matrix.makeRotationFromQuaternion(quat.conjugate());
   //matrix.setPosition(lx,ly,lz);
@@ -314,5 +318,5 @@ function animate() {
       //if(Math.abs(gp.axes[1])>0.2){ly+=gp.axes[1]/10.0}
     }
   }
-	//upd()
+	upd()
 }
