@@ -70,16 +70,16 @@ int main(int argc, char* argv[]) {
 		quat = imuData.fusionQPose;
 	    }
 
-	    if(counter < 50){
+	    /*if(counter < 50){
 		counter++;
 	    }
 	    else if (counter == 50){
 		counter=3;
 		store = true;
 	    }
-	    /*if (getch() == 'a') {
+	    if (getch() == 'a') {
 		store=true;
-	    }*/
+	    }
 
 	   if (store){
 		quat_s = quat;
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
 		std::cout<<"centered\n";
 	   }
 
-	   quat *= quat_s;
+	   quat *= quat_s;*/
 
 	   quat.normalize();
 
