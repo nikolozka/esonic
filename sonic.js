@@ -34,7 +34,7 @@ let ly=0;
 let lz=0;
 
 let angle = 0.0;
-let order = 2;
+let order = 1;
 
 let lfile = "resources/out_l.wav";
 let rfile = "resources/out_r.wav";
@@ -55,11 +55,17 @@ function upd(){
   if(!audioReady) return;
 
   quat = new three.Quaternion(x,y,z,w)
-  matrix.makeRotationFromQuaternion(quat.conjugate());
-  matrix.setPosition(lx,ly,lz);
+  matrix.compose({0,0,0}, quat,{1,1,1})
+
+  //matrix.makeRotationFromQuaternion(quat.conjugate());
+  //matrix.setPosition(lx,ly,lz);
+  //matrix.setPosition(0,0,0);
   scene.setListenerFromMatrix(matrix);
   //source.setPosition(sx,sy,sz);
 //  setInterval(upd, 33);
+
+	
+
 }
 
 async function geoFindMe() {
@@ -220,12 +226,12 @@ let onLoad = function() {
   }
 
   erikal.play();
-  erikar.play();
-  brb1.play();
-  brb2.play();
-  brb3.play();
+  //erikar.play();
+  //brb1.play();
+  //brb2.play();
+  //brb3.play();
 
-  ambics.play();
+  //ambics.play();
 //  upd();
 };
 
@@ -255,7 +261,7 @@ udpPort.on("bundle", function (oscBundle, timeTag, info) {
   if (oscBundle.packets[2].address == "/y") {y=parseFloat(oscBundle.packets[2].args[0].value)}
   if (oscBundle.packets[3].address == "/z") {z=parseFloat(oscBundle.packets[3].args[0].value)}
 
-  //log.info(w + " " + x + " " + y + " " + z);
+  log.info(w + " " + x + " " + y + " " + z);
 
 });
 
@@ -274,7 +280,7 @@ function animate() {
 
   if(joy){
     if(navigator.webkitGetGamepads) {
-      var gp = navigator.webkitGetGamepads()[2]; //check log
+      var gp = navigator.webkitGetGamepads()[0]; //check log
 
       if(gp.buttons[0] == 1) {
       } else if(gp.buttons[1] == 1) {
@@ -290,7 +296,7 @@ function animate() {
 
 
     } else {
-      var gp = navigator.getGamepads()[2]; //check log for joystick id
+      var gp = navigator.getGamepads()[0]; //check log for joystick id
 
       if(gp.buttons[0].value > 0 || gp.buttons[0].pressed == true) {
       } else if(gp.buttons[1].value > 0 || gp.buttons[1].pressed == true) {
@@ -308,5 +314,5 @@ function animate() {
       //if(Math.abs(gp.axes[1])>0.2){ly+=gp.axes[1]/10.0}
     }
   }
-	upd()
+	//upd()
 }

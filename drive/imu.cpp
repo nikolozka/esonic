@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     while (1) {
 
-        usleep(imu->IMUGetPollInterval() * 1000);
+        usleep(imu->IMUGetPollInterval() * 10000);
 
         while (imu->IMURead()) {
             RTIMU_DATA imuData = imu->getIMUData();
@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
 		counter++;
 	    }
 	    else if (counter == 50){
-		counter=51;
+		counter=3;
 		store = true;
 	    }
 	    /*if (getch() == 'a') {
