@@ -55,7 +55,9 @@ function upd(){
   if(!audioReady) return;
 
   quat = new three.Quaternion(x,y,z,w)
-  matrix.compose({0,0,0}, quat,{1,1,1})
+  pos = new three.Vector3(0,0,0)
+  scale = new three.Vector3(1,1,1)
+  matrix.compose(pos, quat,scale)
 
   //matrix.makeRotationFromQuaternion(quat.conjugate());
   //matrix.setPosition(lx,ly,lz);
