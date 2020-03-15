@@ -7,6 +7,7 @@
 //#define ADDRESS "192.168.43.230"
 //#define ADDRESS "192.168.43.59"
 #define ADDRESS "192.168.188.62"
+//#define ADDRESS "192.168.188.37"
 #define PORT 9000
 #define OUTPUT_BUFFER_SIZE 1024
 
@@ -90,7 +91,7 @@ int main(int argc, char* argv[]) {
 
 	   quat *= quat_s;*/
 
-	   quat.normalize();
+	   //quat.normalize();
 
 	   if ((now - rateTimer) > 1000000) {
 		sampleRate = sampleCount;
@@ -105,7 +106,7 @@ int main(int argc, char* argv[]) {
 
 	std::cout<<RTMath::displayDegrees("", vec);
 	std::cout<<"\n";
-
+*/
 	std::cout<<"w: ";
 	std::cout<<quat.scalar();
 	std::cout<<" , x: ";
@@ -114,25 +115,29 @@ int main(int argc, char* argv[]) {
 	std::cout<<quat.y();
 	std::cout<<" , z: ";
 	std::cout<<quat.z();
-	std::cout<<"\n";*/
+	std::cout<<"\n";
 
 	osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
     	p << osc::BeginBundleImmediate
 
         	<< osc::BeginMessage( "/w" )
 		<< (float)quat.scalar()
+//		<< (float)1
 		<< osc::EndMessage
 
         	<< osc::BeginMessage( "/x" )
 		<< (float)quat.x()
+//		<< (float)0
 		<< osc::EndMessage
 
         	<< osc::BeginMessage( "/y" )
 		<< (float)quat.y()
+//		<< (float)0
 		<< osc::EndMessage
 
         	<< osc::BeginMessage( "/z" )
 		<< (float)quat.z()
+//		<< (float)0
 		<< osc::EndMessage
 
         	<< osc::EndBundle;

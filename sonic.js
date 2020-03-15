@@ -55,7 +55,7 @@ function upd(){
   if(!audioReady) return;
 
   quat = new three.Quaternion(x,y,z,w)
-  pos = new three.Vector3(0,0,0)
+  pos = new three.Vector3(0,1,0)
   scale = new three.Vector3(1,1,1)
   matrix.compose(pos, quat,scale)
 
@@ -65,7 +65,7 @@ function upd(){
   //matrix.setPosition(lx,ly,lz);
   //matrix.setPosition(0,0,0);
   scene.setListenerFromMatrix(matrix);
-  //source.setPosition(sx,sy,sz);
+  elsource.setPosition(sx,sy,sz);
 //  setInterval(upd, 33);
 
 	
@@ -137,8 +137,8 @@ function initAudio() {
 
   let dimensions = {
     width: 15,
-    height: 6,
-    depth: 15,
+    height: 15,
+    depth: 6,
   };
   let materials = {
     left: 'transparent',
@@ -158,7 +158,7 @@ function initAudio() {
   erikal.loop = true;
   erikalSource = audioContext.createMediaElementSource(erikal);
   elsource = scene.createSource();
-  elsource.setPosition(-2,1,-2);
+  elsource.setPosition(2,-2,1);
   erikalSource.connect(elsource.input);
 
   erikar = document.createElement('audio');
@@ -168,7 +168,7 @@ function initAudio() {
   erikar.loop = true;
   erikarSource = audioContext.createMediaElementSource(erikar);
   ersource = scene.createSource();
-  ersource.setPosition(2,1,-2);
+  ersource.setPosition(2,2,1);
   erikarSource.connect(ersource.input);
 
   brb1 = document.createElement('audio');
@@ -178,7 +178,7 @@ function initAudio() {
   brb1.loop = true;
   brb1Source = audioContext.createMediaElementSource(brb1);
   b1source = scene.createSource();
-  b1source.setPosition(0,5,3);
+  b1source.setPosition(1.5,0,-2.5);
   brb1Source.connect(b1source.input);
 
   brb2 = document.createElement('audio');
@@ -188,7 +188,7 @@ function initAudio() {
   brb2.loop = true;
   brb2Source = audioContext.createMediaElementSource(brb2);
   b2source = scene.createSource();
-  b2source.setPosition(-3,4,-2);
+  b2source.setPosition(-0.5,2,-1.5);
   brb2Source.connect(b2source.input);
 
   brb3 = document.createElement('audio');
@@ -198,7 +198,7 @@ function initAudio() {
   brb3.loop = true;
   brb3Source = audioContext.createMediaElementSource(brb3);
   b3source = scene.createSource();
-  b3source.setPosition(5,3,0);
+  b3source.setPosition(-1.5,-1,1);
   brb3Source.connect(b3source.input);
 
   ambics = document.createElement('audio');
@@ -229,13 +229,13 @@ let onLoad = function() {
   	initAudio();
   }
 
-  erikal.play();
+  //erikal.play();
   //erikar.play();
-  //brb1.play();
-  //brb2.play();
-  //brb3.play();
+  brb1.play();
+  brb2.play();
+  brb3.play();
 
-  //ambics.play();
+  ambics.play();
 //  upd();
 };
 
